@@ -10,6 +10,7 @@ import com.acme.payroll.utils.JsonUtils;
 import javax.inject.Inject;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 public class PayrollApp {
@@ -43,11 +44,17 @@ public class PayrollApp {
                 String name = employee.getName();
                 String currencyId = employee.getRequiredCurrencyId();
                 double amount = payroll.convertSalary(employee.getSalary().getAmount(), currencyId);
-                System.out.println(String.format("Name: %s || Monthly Payment: %s %.2f", name, currencyId, amount));
+                System.out.println(String.format("Name: %s || Monthly Payment: %s %s", name, currencyId, formatSalary(amount)));
             } catch (CurrencyNotFoundException e) {
                 System.err.println(String.format("%s for employee %s", e.getMessage(), employee.getName()));
             }
         }
+    }
+
+    private String formatSalary(double amount) {
+        DecimalFormat decimalFormat = new DecimalFormat("#.00");
+        decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
+        return decimalFormat.format(amount);
     }
 
     private static String readJson(String path) {
