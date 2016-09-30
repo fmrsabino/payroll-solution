@@ -29,7 +29,7 @@ public class Employee implements RootItem {
     }
 
     public String getName() {
-        return firstName;
+        return firstName + " " + lastName;
     }
 
     public String getRequiredCurrencyId() {

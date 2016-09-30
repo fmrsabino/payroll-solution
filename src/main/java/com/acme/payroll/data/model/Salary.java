@@ -4,10 +4,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class Salary implements RootItem {
     @SerializedName("currency") private final String currencyId;
-    private final String amount;
+    private final double amount;
     @SerializedName("display_amount") private final String displayAmount;
 
-    public Salary(String currencyId, String amount, String displayAmount) {
+    public Salary(String currencyId, double amount, String displayAmount) {
         this.currencyId = currencyId;
         this.amount = amount;
         this.displayAmount = displayAmount;
@@ -26,7 +26,7 @@ public class Salary implements RootItem {
         return currencyId;
     }
 
-    public String getAmount() {
+    public double getAmount() {
         return amount;
     }
 

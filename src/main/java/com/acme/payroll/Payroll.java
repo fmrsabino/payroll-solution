@@ -2,27 +2,52 @@ package com.acme.payroll;
 
 import com.acme.payroll.data.Storage;
 import com.acme.payroll.data.model.*;
+import com.acme.payroll.exception.CurrencyNotFoundException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import javax.inject.Inject;
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Payroll {
-    private final Storage storage = new Storage();
+    private final Storage storage;
 
-    public void setEmployees(List<Employee> employees) {
-        storage.setEmployees(employees);
+    @Inject
+    public Payroll(Storage storage) {
+        this.storage = storage;
     }
 
-    public void setCurrency(List<Currency> currency) {
-        storage.setCurrency(currency);
+    public void setEmployees(String employeesData) {
+        JsonHeader<Employee> employeesJson =
+                parseRoot(employeesData, new TypeToken<JsonHeader<Employee>>(){}.getType());
+        storage.setEmployees(employeesJson.getItems());
+    }
+
+    public void setCurrency(String currencyData) {
+        JsonHeader<Currency> currencyJson =
+                parseRoot(currencyData, new TypeToken<JsonHeader<Currency>>(){}.getType());
+        storage.setCurrencies(currencyJson.getItems());
+    }
+
+    public Collection<Employee> getEmployees() {
+        return storage.getEmployees();
+    }
+
+    public double convertSalary(double amount, String currencyId) throws CurrencyNotFoundException {
+        Currency currency = storage.getCurrency(currencyId);
+        if (currency == null) {
+            throw new CurrencyNotFoundException(currencyId);
+        }
+        return currency.getRate() * amount;
     }
 
     public List<Salary> getPayroll(String inputData) {
         JsonHeader<Employee> employeeJsonHeader = parseRoot(inputData,
                 new TypeToken<JsonHeader<Employee>>(){}.getType());
+        storage.setEmployees(employeeJsonHeader.getItems());
         return employeeJsonHeader.getItems().stream().map(Employee::getSalary).collect(Collectors.toList());
     }
 

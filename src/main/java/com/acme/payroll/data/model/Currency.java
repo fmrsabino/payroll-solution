@@ -1,10 +1,12 @@
 package com.acme.payroll.data.model;
 
-public class Currency {
-    private final String currencyId;
-    private final String rate;
+import com.google.gson.annotations.SerializedName;
 
-    public Currency(String currencyId, String rate) {
+public class Currency implements RootItem {
+    @SerializedName("currency") private final String currencyId;
+    private final double rate;
+
+    public Currency(String currencyId, double rate) {
         this.currencyId = currencyId;
         this.rate = rate;
     }
@@ -13,7 +15,7 @@ public class Currency {
         return currencyId;
     }
 
-    public String getRate() {
+    public double getRate() {
         return rate;
     }
 }
