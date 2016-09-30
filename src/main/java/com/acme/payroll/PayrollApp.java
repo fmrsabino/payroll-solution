@@ -1,6 +1,8 @@
 package com.acme.payroll;
 
 import com.acme.payroll.data.MockStorage;
+import com.acme.payroll.data.model.Employee;
+import com.acme.payroll.exception.CurrencyNotFoundException;
 import com.acme.payroll.injection.component.DaggerPayrollComponent;
 import com.acme.payroll.injection.module.PayrollModule;
 import com.acme.payroll.utils.JsonUtils;
@@ -8,9 +10,11 @@ import com.acme.payroll.utils.JsonUtils;
 import javax.inject.Inject;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.text.DecimalFormat;
 
 public class PayrollApp {
-    private static final String EMPLOYEES_PATH = "employees.json";
+    private static final String EMPLOYEES_PATH = "resources/employees.json";
+    private static final String EXCHANGE_RATES_PATH = "resources/exchange_rates.json";
 
     @Inject Payroll payroll;
 
@@ -29,7 +33,21 @@ public class PayrollApp {
 
     private void run() {
         String employeesJson = readJson(EMPLOYEES_PATH);
-        payroll.getPayroll(employeesJson).stream().forEach(System.out::println);
+        payroll.setEmployees(employeesJson);
+
+        String currencyJson = readJson(EXCHANGE_RATES_PATH);
+        payroll.setCurrency(currencyJson);
+
+        for (Employee employee : payroll.getEmployees()) {
+            try {
+                String name = employee.getName();
+                String currencyId = employee.getRequiredCurrencyId();
+                double amount = payroll.convertSalary(employee.getSalary().getAmount(), currencyId);
+                System.out.println(String.format("Name: %s || Monthly Payment: %s %.2f", name, currencyId, amount));
+            } catch (CurrencyNotFoundException e) {
+                System.err.println(String.format("%s for employee %s", e.getMessage(), employee.getName()));
+            }
+        }
     }
 
     private static String readJson(String path) {
