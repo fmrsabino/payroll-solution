@@ -1,6 +1,6 @@
 package com.acme.payroll;
 
-import com.acme.payroll.model.Salary;
+import com.acme.payroll.data.model.Salary;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
