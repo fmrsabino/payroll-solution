@@ -1,6 +1,6 @@
 package com.acme.payroll;
 
-import com.acme.payroll.data.MockStorage;
+import com.acme.payroll.data.SimpleStorage;
 import com.acme.payroll.data.model.Employee;
 import com.acme.payroll.exception.CurrencyNotFoundException;
 import com.acme.payroll.injection.component.DaggerPayrollComponent;
@@ -27,7 +27,7 @@ public class PayrollApp {
 
     private void inject() {
         DaggerPayrollComponent.builder()
-                .payrollModule(new PayrollModule(new MockStorage()))
+                .payrollModule(new PayrollModule(new SimpleStorage()))
                 .build()
                 .inject(this);
     }

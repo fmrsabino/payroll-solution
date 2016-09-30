@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MockStorage implements Storage {
+public class SimpleStorage implements Storage {
     private final Map<String, Employee> employees = new HashMap<>();
     private final Map<String, Currency> currencies = new HashMap<>();
 

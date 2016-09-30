@@ -1,6 +1,6 @@
 package com.acme.payroll;
 
-import com.acme.payroll.data.MockStorage;
+import com.acme.payroll.data.SimpleStorage;
 import com.acme.payroll.data.model.Salary;
 import org.junit.After;
 import org.junit.Before;
@@ -21,7 +21,7 @@ public class PayrollTest {
 
     @Before
     public void setup() {
-        payroll =  new Payroll(new MockStorage());
+        payroll =  new Payroll(new SimpleStorage());
     }
 
     @After

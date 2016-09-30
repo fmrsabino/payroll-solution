@@ -1,7 +1,7 @@
 package com.acme.payroll.injection.module;
 
 import com.acme.payroll.Payroll;
-import com.acme.payroll.data.MockStorage;
+import com.acme.payroll.data.SimpleStorage;
 import com.acme.payroll.data.Storage;
 import dagger.Module;
 import dagger.Provides;
@@ -20,7 +20,7 @@ public class PayrollModule {
     @Provides
     @Singleton
     Storage provideStorage() {
-        return new MockStorage();
+        return new SimpleStorage();
     }
 
     @Provides
