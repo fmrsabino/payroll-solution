@@ -6,12 +6,11 @@ import com.acme.payroll.exception.CurrencyNotFoundException;
 import com.acme.payroll.injection.component.DaggerPayrollComponent;
 import com.acme.payroll.injection.module.PayrollModule;
 import com.acme.payroll.utils.JsonUtils;
+import com.acme.payroll.utils.SalaryUtils;
 
 import javax.inject.Inject;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 
 public class PayrollApp {
     private static final String EMPLOYEES_PATH = "resources/employees.json";
@@ -43,18 +42,17 @@ public class PayrollApp {
             try {
                 String name = employee.getName();
                 String currencyId = employee.getRequiredCurrencyId();
-                double amount = payroll.convertSalary(employee.getSalary().getAmount(), currencyId);
-                System.out.println(String.format("Name: %s || Monthly Payment: %s %s", name, currencyId, formatSalary(amount)));
+                double rate = payroll.getCurrency(currencyId).getRate();
+                double amount = SalaryUtils.convertSalary(employee.getSalary().getAmount(), rate);
+
+                System.out.println(String.format("Name: %s || Monthly Payment: %s %s",
+                        name, currencyId, SalaryUtils.formatSalary(amount)));
             } catch (CurrencyNotFoundException e) {
                 System.err.println(String.format("%s for employee %s", e.getMessage(), employee.getName()));
+            } catch (NullPointerException e) {
+                System.err.println("");
             }
         }
-    }
-
-    private String formatSalary(double amount) {
-        DecimalFormat decimalFormat = new DecimalFormat("#.00");
-        decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
-        return decimalFormat.format(amount);
     }
 
     private static String readJson(String path) {

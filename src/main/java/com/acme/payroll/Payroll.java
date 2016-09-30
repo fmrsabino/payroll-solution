@@ -36,12 +36,13 @@ public class Payroll {
         return storage.getEmployees();
     }
 
-    public double convertSalary(double amount, String currencyId) throws CurrencyNotFoundException {
+    public Currency getCurrency(String currencyId) throws CurrencyNotFoundException {
         Currency currency = storage.getCurrency(currencyId);
         if (currency == null) {
             throw new CurrencyNotFoundException(currencyId);
+        } else {
+            return currency;
         }
-        return currency.getRate() * amount;
     }
 
     public List<Salary> getPayroll(String inputData) {
