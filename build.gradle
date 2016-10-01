@@ -13,9 +13,11 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'idea'
+apply plugin:'application'
 apply plugin: "net.ltgt.apt"
 
 sourceCompatibility = 1.8
+mainClassName = "com.acme.payroll.PayrollApp"
 
 repositories {
     mavenCentral()
