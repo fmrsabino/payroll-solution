@@ -43,10 +43,11 @@ public class PayrollApp {
                 String name = employee.getName();
                 String currencyId = employee.getRequiredCurrencyId();
                 double rate = payroll.getCurrency(currencyId).getRate();
-                double amount = SalaryUtils.convertSalary(employee.getSalary().getAmount(), rate);
+                double yearlyAmount = SalaryUtils.convertSalary(employee.getSalary().getAmount(), rate);
+                double monthlyAmount = SalaryUtils.getMonthlyPayment(yearlyAmount);
 
                 System.out.println(String.format("Name: %s || Monthly Payment: %s %s",
-                        name, currencyId, SalaryUtils.formatSalary(amount)));
+                        name, currencyId, SalaryUtils.formatValue(monthlyAmount)));
             } catch (CurrencyNotFoundException e) {
                 System.err.println(String.format("%s for employee %s", e.getMessage(), employee.getName()));
             } catch (NullPointerException e) {

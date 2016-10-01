@@ -12,12 +12,16 @@ public class SalaryUtils {
         return rate * amount;
     }
 
-    public static String formatSalary(double amount) {
+    public static String formatValue(double value) {
         DecimalFormat decimalFormat = new DecimalFormat("#.00", new DecimalFormatSymbols(Locale.UK));
         decimalFormat.setGroupingUsed(true);
         decimalFormat.setGroupingSize(GROUP_SIZE);
         decimalFormat.setDecimalSeparatorAlwaysShown(true);
         decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
-        return decimalFormat.format(amount);
+        return decimalFormat.format(value);
+    }
+
+    public static double getMonthlyPayment(double yearlyAmount) {
+        return yearlyAmount / 12f;
     }
 }
