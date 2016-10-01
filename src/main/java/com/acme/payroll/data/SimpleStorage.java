@@ -14,11 +14,13 @@ public class SimpleStorage implements Storage {
 
     public void setEmployees(List<Employee> employees) {
         this.employees.clear();
+        if (employees == null) { return; }
         employees.stream().forEach(employee -> this.employees.put(employee.getName(), employee));
     }
 
     public void setCurrencies(List<Currency> currencies) {
         this.currencies.clear();
+        if (currencies == null) { return; }
         currencies.stream().forEach(currency -> this.currencies.put(currency.getCurrencyId(), currency));
     }
 
@@ -39,5 +41,13 @@ public class SimpleStorage implements Storage {
     @Override
     public Currency getCurrency(String currencyId) {
         return currencies.get(currencyId);
+    }
+
+    public Map<String, Employee> getEmployeesMap() {
+        return employees;
+    }
+
+    public Map<String, Currency> getCurrenciesMap() {
+        return currencies;
     }
 }

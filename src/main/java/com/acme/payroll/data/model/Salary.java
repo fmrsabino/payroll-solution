@@ -22,6 +22,30 @@ public class Salary implements RootItem {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Salary salary = (Salary) o;
+
+        if (Double.compare(salary.amount, amount) != 0) return false;
+        if (currencyId != null ? !currencyId.equals(salary.currencyId) : salary.currencyId != null) return false;
+        return displayAmount != null ? displayAmount.equals(salary.displayAmount) : salary.displayAmount == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = currencyId != null ? currencyId.hashCode() : 0;
+        temp = Double.doubleToLongBits(amount);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (displayAmount != null ? displayAmount.hashCode() : 0);
+        return result;
+    }
+
     public String getCurrencyId() {
         return currencyId;
     }
