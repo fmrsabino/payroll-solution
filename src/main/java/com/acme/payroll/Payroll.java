@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 
 import javax.inject.Inject;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,12 +24,14 @@ public class Payroll {
     public void setEmployees(String employeesData) {
         JsonHeader<Employee> employeesJson =
                 parseRoot(employeesData, new TypeToken<JsonHeader<Employee>>(){}.getType());
+        if (employeesJson == null) { return; }
         storage.setEmployees(employeesJson.getItems());
     }
 
-    public void setCurrency(String currencyData) {
+    public void setCurrencies(String currencyData) {
         JsonHeader<Currency> currencyJson =
                 parseRoot(currencyData, new TypeToken<JsonHeader<Currency>>(){}.getType());
+        if (currencyJson == null) { return; }
         storage.setCurrencies(currencyJson.getItems());
     }
 
@@ -48,6 +51,7 @@ public class Payroll {
     public List<Salary> getPayroll(String inputData) {
         JsonHeader<Employee> employeeJsonHeader = parseRoot(inputData,
                 new TypeToken<JsonHeader<Employee>>(){}.getType());
+        if (employeeJsonHeader == null) { return new ArrayList<>(); }
         storage.setEmployees(employeeJsonHeader.getItems());
         return employeeJsonHeader.getItems().stream().map(Employee::getSalary).collect(Collectors.toList());
     }

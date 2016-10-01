@@ -36,7 +36,7 @@ public class PayrollApp {
         payroll.setEmployees(employeesJson);
 
         String currencyJson = readJson(EXCHANGE_RATES_PATH);
-        payroll.setCurrency(currencyJson);
+        payroll.setCurrencies(currencyJson);
 
         for (Employee employee : payroll.getEmployees()) {
             try {
