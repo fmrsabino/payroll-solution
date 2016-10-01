@@ -5,18 +5,15 @@ import com.acme.payroll.data.model.Employee;
 import com.acme.payroll.exception.CurrencyNotFoundException;
 import com.acme.payroll.injection.component.DaggerPayrollComponent;
 import com.acme.payroll.injection.module.PayrollModule;
-import com.acme.payroll.utils.JsonUtils;
+import com.acme.payroll.utils.JsonResourceLoader;
+import com.acme.payroll.utils.ResourceLoader;
 import com.acme.payroll.utils.SalaryUtils;
 
 import javax.inject.Inject;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 public class PayrollApp {
-    private static final String EMPLOYEES_PATH = "resources/employees.json";
-    private static final String EXCHANGE_RATES_PATH = "resources/exchange_rates.json";
-
     @Inject Payroll payroll;
+    @Inject ResourceLoader jsonResourceLoader;
 
     public static void main(String[] args) {
         PayrollApp payrollApp = new PayrollApp();
@@ -26,17 +23,14 @@ public class PayrollApp {
 
     private void inject() {
         DaggerPayrollComponent.builder()
-                .payrollModule(new PayrollModule(new SimpleStorage()))
+                .payrollModule(new PayrollModule(new SimpleStorage(), new JsonResourceLoader()))
                 .build()
                 .inject(this);
     }
 
     private void run() {
-        String employeesJson = readJson(EMPLOYEES_PATH);
-        payroll.setEmployees(employeesJson);
-
-        String currencyJson = readJson(EXCHANGE_RATES_PATH);
-        payroll.setCurrencies(currencyJson);
+        payroll.setEmployees(jsonResourceLoader.getEmployees());
+        payroll.setCurrencies(jsonResourceLoader.getCurrencies());
 
         for (Employee employee : payroll.getEmployees()) {
             try {
@@ -54,14 +48,5 @@ public class PayrollApp {
                 System.err.println("");
             }
         }
-    }
-
-    private static String readJson(String path) {
-        try {
-            return JsonUtils.inputStreamToString(new FileInputStream(path));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }
