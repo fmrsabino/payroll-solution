@@ -23,7 +23,7 @@ public class PayrollModule {
     @Provides
     @Singleton
     Storage provideStorage() {
-        return new SimpleStorage();
+        return storage;
     }
 
     @Provides
@@ -35,7 +35,7 @@ public class PayrollModule {
     @Provides
     @Singleton
     ResourceLoader provideResourceLoader() {
-        return this.resourceLoader;
+        return resourceLoader;
     }
 
 }
