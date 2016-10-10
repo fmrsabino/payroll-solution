@@ -2,8 +2,9 @@ package com.acme.payroll.injection.component;
 
 import com.acme.payroll.Payroll;
 import com.acme.payroll.PayrollApp;
+import com.acme.payroll.configuration.Configuration;
 import com.acme.payroll.injection.module.PayrollModule;
-import com.acme.payroll.utils.ResourceLoader;
+import com.acme.payroll.resourceloader.ResourceLoader;
 import dagger.Component;
 
 import javax.inject.Singleton;
@@ -15,4 +16,5 @@ public interface PayrollComponent {
 
     Payroll payroll();
     ResourceLoader resourceLoader();
+    Configuration configuration();
 }

@@ -1,4 +1,4 @@
-package com.acme.payroll.utils;
+package com.acme.payroll.resourceloader;
 
 public interface ResourceLoader {
     String getEmployees();

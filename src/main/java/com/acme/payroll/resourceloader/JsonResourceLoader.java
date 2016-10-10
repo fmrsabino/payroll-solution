@@ -1,4 +1,6 @@
-package com.acme.payroll.utils;
+package com.acme.payroll.resourceloader;
+
+import com.acme.payroll.utils.JsonUtils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

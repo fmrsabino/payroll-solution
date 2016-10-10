@@ -1,25 +1,27 @@
 package com.acme.payroll;
 
+import com.acme.payroll.configuration.BaseConfiguration;
+import com.acme.payroll.configuration.Configuration;
 import com.acme.payroll.data.SimpleStorage;
 import com.acme.payroll.data.model.Employee;
 import com.acme.payroll.exception.CurrencyNotFoundException;
 import com.acme.payroll.injection.component.DaggerPayrollComponent;
 import com.acme.payroll.injection.module.PayrollModule;
-import com.acme.payroll.utils.JsonResourceLoader;
-import com.acme.payroll.utils.ResourceLoader;
+import com.acme.payroll.resourceloader.JsonResourceLoader;
+import com.acme.payroll.resourceloader.ResourceLoader;
 import com.acme.payroll.utils.SalaryUtils;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class PayrollApp {
     private static final String RESULT_FORMAT = "Name: %s || Monthly Payment: %s %s";
 
     @Inject Payroll payroll;
     @Inject ResourceLoader jsonResourceLoader;
+    @Inject Configuration configuration;
 
     public static void main(String[] args) {
         PayrollApp payrollApp = new PayrollApp();
@@ -29,7 +31,7 @@ public class PayrollApp {
 
     private void inject() {
         DaggerPayrollComponent.builder()
-                .payrollModule(new PayrollModule(new SimpleStorage(), new JsonResourceLoader()))
+                .payrollModule(new PayrollModule(new SimpleStorage(), new JsonResourceLoader(), new BaseConfiguration()))
                 .build()
                 .inject(this);
     }
@@ -55,7 +57,7 @@ public class PayrollApp {
                 BigDecimal monthlyAmount = SalaryUtils.getMonthlyPayment(yearlyAmount);
 
                 monthlyPayments.add(new MonthlyPaymentInfo(
-                        name, currencyId, SalaryUtils.formatValue(monthlyAmount, Locale.UK)));
+                        name, currencyId, SalaryUtils.formatValue(monthlyAmount, configuration.getLocale())));
             } catch (CurrencyNotFoundException e) {
                 System.err.println(String.format("%s for employee %s", e.getMessage(), employee.getName()));
             } catch (NullPointerException e) {
