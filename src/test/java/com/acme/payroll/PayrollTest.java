@@ -1,6 +1,6 @@
 package com.acme.payroll;
 
-import com.acme.payroll.data.SimpleStorage;
+import com.acme.payroll.data.Storage;
 import com.acme.payroll.data.model.Currency;
 import com.acme.payroll.data.model.Employee;
 import com.acme.payroll.data.model.Salary;
@@ -29,11 +29,11 @@ public class PayrollTest {
 
     private Payroll payroll;
 
-    @Mock SimpleStorage simpleStorage;
+    @Mock Storage storage;
 
     @Before
     public void setup() {
-        payroll =  new Payroll(simpleStorage);
+        payroll =  new Payroll(storage);
     }
 
     @After
@@ -60,31 +60,31 @@ public class PayrollTest {
     public void testPayrollNull() {
         List<Salary> salaries = payroll.getPayroll(null);
         assertEquals(salaries.size(), 0);
-        verify(simpleStorage, never()).setEmployees(anyListOf(Employee.class));
+        verify(storage, never()).setEmployees(anyListOf(Employee.class));
     }
 
     @Test
     public void setEmployeesCallsStorage() {
         payroll.setEmployees(EMPLOYEES_FILE);
-        verify(simpleStorage).setEmployees(anyListOf(Employee.class));
+        verify(storage).setEmployees(anyListOf(Employee.class));
     }
 
     @Test
     public void setEmployeesNull() {
         payroll.setEmployees(null);
-        verify(simpleStorage, never()).setEmployees(anyListOf(Employee.class));
+        verify(storage, never()).setEmployees(anyListOf(Employee.class));
     }
 
     @Test
     public void setCurrenciesCallsStorage() {
         payroll.setCurrencies(RATES_FILE);
-        verify(simpleStorage).setCurrencies(anyListOf(Currency.class));
+        verify(storage).setCurrencies(anyListOf(Currency.class));
     }
 
     @Test
     public void setCurrenciesNull() {
         payroll.setCurrencies(null);
-        verify(simpleStorage, never()).setCurrencies(anyListOf(Currency.class));
+        verify(storage, never()).setCurrencies(anyListOf(Currency.class));
     }
 
     @Test
@@ -93,9 +93,9 @@ public class PayrollTest {
         Employee e = getMockEmployee();
         employees.add(e);
 
-        when(simpleStorage.getEmployees()).thenReturn(employees);
+        when(storage.getEmployees()).thenReturn(employees);
         Collection<Employee> employeeCollection = payroll.getEmployees();
-        verify(simpleStorage).getEmployees();
+        verify(storage).getEmployees();
         assertTrue(employeeCollection.contains(e));
     }
 
@@ -103,14 +103,14 @@ public class PayrollTest {
     public void getCurrencyCallsStorage() throws CurrencyNotFoundException {
         Currency c = getMockCurrency();
 
-        when(simpleStorage.getCurrency(c.getCurrencyId())).thenReturn(c);
+        when(storage.getCurrency(c.getCurrencyId())).thenReturn(c);
         Currency result = payroll.getCurrency(c.getCurrencyId());
         assertEquals(result, c);
     }
 
     @Test(expected = CurrencyNotFoundException.class)
     public void getCurrencyThrowsException() throws CurrencyNotFoundException {
-        when(simpleStorage.getCurrency(anyString())).thenReturn(null);
+        when(storage.getCurrency(anyString())).thenReturn(null);
         payroll.getCurrency(anyString());
     }
 
