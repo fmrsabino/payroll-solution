@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class Currency implements RootItem {
     @SerializedName("currency") private final String currencyId;
-    private final double rate;
+    private final String rate;
 
-    public Currency(String currencyId, double rate) {
+    public Currency(String currencyId, String rate) {
         this.currencyId = currencyId;
         this.rate = rate;
     }
@@ -15,7 +15,7 @@ public class Currency implements RootItem {
         return currencyId;
     }
 
-    public double getRate() {
+    public String getRate() {
         return rate;
     }
 
@@ -26,17 +26,15 @@ public class Currency implements RootItem {
 
         Currency currency = (Currency) o;
 
-        if (Double.compare(currency.rate, rate) != 0) return false;
-        return currencyId != null ? currencyId.equals(currency.currencyId) : currency.currencyId == null;
+        if (currencyId != null ? !currencyId.equals(currency.currencyId) : currency.currencyId != null) return false;
+        return rate != null ? rate.equals(currency.rate) : currency.rate == null;
+
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = currencyId != null ? currencyId.hashCode() : 0;
-        temp = Double.doubleToLongBits(rate);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        int result = currencyId != null ? currencyId.hashCode() : 0;
+        result = 31 * result + (rate != null ? rate.hashCode() : 0);
         return result;
     }
 }

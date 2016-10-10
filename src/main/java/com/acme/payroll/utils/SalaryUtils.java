@@ -1,27 +1,31 @@
 package com.acme.payroll.utils;
 
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.Locale;
 
 public class SalaryUtils {
-    public static final int GROUP_SIZE = 3;
+    private static final int GROUP_SIZE = 3;
+    private static final int SCALE_SIZE = 2;
+    private static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_UP;
 
-    public static double convertSalary(double amount, double rate) {
-        return rate * amount;
+    public static BigDecimal convertSalary(String amount, String rate) {
+        return new BigDecimal(amount)
+                .multiply(new BigDecimal(rate))
+                .setScale(SCALE_SIZE, ROUNDING_MODE);
     }
 
-    public static String formatValue(double value) {
-        DecimalFormat decimalFormat = new DecimalFormat("#.00", new DecimalFormatSymbols(Locale.UK));
-        decimalFormat.setGroupingUsed(true);
+    public static String formatValue(BigDecimal value, Locale locale) {
+        DecimalFormat decimalFormat = new DecimalFormat("#.00", new DecimalFormatSymbols(locale));
         decimalFormat.setGroupingSize(GROUP_SIZE);
-        decimalFormat.setDecimalSeparatorAlwaysShown(true);
-        decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
-        return decimalFormat.format(value);
+        decimalFormat.setGroupingUsed(true);
+        return decimalFormat.format(value.doubleValue());
     }
 
-    public static double getMonthlyPayment(double yearlyAmount) {
-        return yearlyAmount / 12f;
+    public static BigDecimal getMonthlyPayment(BigDecimal yearlyAmount) {
+        return yearlyAmount.divide(new BigDecimal(12), SCALE_SIZE, ROUNDING_MODE);
     }
 }

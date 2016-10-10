@@ -29,7 +29,7 @@ public class StorageTest {
     public void setEmployee() {
         String firstName = "MockFirstName";
         String secondName = "MockSecondName";
-        Salary salary = new Salary("MockCurrency", 10, "MockDisplay");
+        Salary salary = new Salary("MockCurrency", "10", "MockDisplay");
         Employee employee = new Employee(firstName, secondName, "MockSection", "MockCurrency", salary);
         List<Employee> employees = new ArrayList<>();
         employees.add(employee);
@@ -48,7 +48,7 @@ public class StorageTest {
 
     @Test
     public void setCurrency() {
-        Currency currency = new Currency("MockId", 1f);
+        Currency currency = new Currency("MockId", "1");
         List<Currency> currencies = new ArrayList<>();
         currencies.add(currency);
 
@@ -62,12 +62,12 @@ public class StorageTest {
     public void setSameEmployees() {
         String firstName1 = "MockFirstName";
         String secondName1 = "MockSecondName";
-        Salary salary1 = new Salary("MockCurrency", 10, "MockDisplay");
+        Salary salary1 = new Salary("MockCurrency", "10", "MockDisplay");
         Employee employee1 = new Employee(firstName1, secondName1, "MockSection", "MockCurrency", salary1);
 
         String firstName2 = "MockFirstName";
         String secondName2 = "MockSecondName";
-        Salary salary2 = new Salary("MockCurrency", 10, "MockDisplay");
+        Salary salary2 = new Salary("MockCurrency", "10", "MockDisplay");
         Employee employee2 = new Employee(firstName2, secondName2, "MockSection", "MockCurrency", salary2);
 
         List<Employee> employees = new ArrayList<>();
@@ -84,8 +84,8 @@ public class StorageTest {
 
     @Test
     public void setSameCurrency() {
-        Currency currency1 = new Currency("MockId", 1f);
-        Currency currency2 = new Currency("MockId", 1f);
+        Currency currency1 = new Currency("MockId", "1");
+        Currency currency2 = new Currency("MockId", "1");
         List<Currency> currencies = new ArrayList<>();
         currencies.add(currency1);
         currencies.add(currency2);

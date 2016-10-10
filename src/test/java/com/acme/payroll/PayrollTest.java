@@ -121,11 +121,11 @@ public class PayrollTest {
     private Employee getMockEmployee() {
         String firstName1 = "MockFirstName";
         String secondName1 = "MockSecondName";
-        Salary salary1 = new Salary("MockCurrency", 10, "MockDisplay");
+        Salary salary1 = new Salary("MockCurrency", "10", "MockDisplay");
         return new Employee(firstName1, secondName1, "MockSection", "MockCurrency", salary1);
     }
 
     private Currency getMockCurrency() {
-        return new Currency("MockId", 1f);
+        return new Currency("MockId", "1");
     }
 }
