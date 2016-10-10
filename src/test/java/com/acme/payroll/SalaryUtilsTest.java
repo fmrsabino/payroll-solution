@@ -40,6 +40,21 @@ public class SalaryUtilsTest {
         assertEquals("1.06", s4);
     }
 
+    @Test
+    public void testMonthlyPayment() {
+        BigDecimal bd1 = SalaryUtils.getMonthlyPayment(getBigDecimal(1000));
+        assertEquals(getBigDecimal(83.33), bd1);
+
+        BigDecimal bd2 = SalaryUtils.getMonthlyPayment(getBigDecimal(10));
+        assertEquals(getBigDecimal(0.83), bd2);
+
+        BigDecimal bd3 = SalaryUtils.getMonthlyPayment(getBigDecimal(0));
+        assertEquals(getBigDecimal(0.00), bd3);
+
+        BigDecimal bd4 = SalaryUtils.getMonthlyPayment(getBigDecimal(10154.5454));
+        assertEquals(getBigDecimal(846.21), bd4);
+    }
+
     private BigDecimal getBigDecimal(double d) {
         return new BigDecimal(d).setScale(2, RoundingMode.HALF_UP);
     }
