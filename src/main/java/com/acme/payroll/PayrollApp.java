@@ -10,8 +10,12 @@ import com.acme.payroll.utils.ResourceLoader;
 import com.acme.payroll.utils.SalaryUtils;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PayrollApp {
+    private static final String RESULT_FORMAT = "Name: %s || Monthly Payment: %s %s";
+
     @Inject Payroll payroll;
     @Inject ResourceLoader jsonResourceLoader;
 
@@ -29,9 +33,17 @@ public class PayrollApp {
     }
 
     private void run() {
+        loadData();
+        printMonthlyPayments(getEmployeesMonthlyPayment());
+    }
+
+    private void loadData() {
         payroll.setEmployees(jsonResourceLoader.getEmployees());
         payroll.setCurrencies(jsonResourceLoader.getCurrencies());
+    }
 
+    private List<MonthlyPaymentInfo> getEmployeesMonthlyPayment() {
+        List<MonthlyPaymentInfo> monthlyPayments = new ArrayList<>();
         for (Employee employee : payroll.getEmployees()) {
             try {
                 String name = employee.getName();
@@ -40,13 +52,32 @@ public class PayrollApp {
                 double yearlyAmount = SalaryUtils.convertSalary(employee.getSalary().getAmount(), rate);
                 double monthlyAmount = SalaryUtils.getMonthlyPayment(yearlyAmount);
 
-                System.out.println(String.format("Name: %s || Monthly Payment: %s %s",
+                monthlyPayments.add(new MonthlyPaymentInfo(
                         name, currencyId, SalaryUtils.formatValue(monthlyAmount)));
             } catch (CurrencyNotFoundException e) {
                 System.err.println(String.format("%s for employee %s", e.getMessage(), employee.getName()));
             } catch (NullPointerException e) {
-                System.err.println("");
+                System.err.println(e.getMessage());
             }
+        }
+        return monthlyPayments;
+    }
+
+    private void printMonthlyPayments(List<MonthlyPaymentInfo> monthlyPaymentInfo) {
+        for (MonthlyPaymentInfo i : monthlyPaymentInfo) {
+            System.out.println(String.format(RESULT_FORMAT, i.employeeName, i.currencyId, i.formattedValue));
+        }
+    }
+
+    public static class MonthlyPaymentInfo {
+        public final String employeeName;
+        public final String currencyId;
+        public final String formattedValue;
+
+        private MonthlyPaymentInfo(String employeeName, String currencyId, String formattedValue) {
+            this.employeeName = employeeName;
+            this.currencyId = currencyId;
+            this.formattedValue = formattedValue;
         }
     }
 }
