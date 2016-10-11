@@ -37,8 +37,7 @@ public class PayrollTest {
     }
 
     @After
-    public void teardown() {
-    }
+    public void teardown() {}
 
     @Test
     public void testInputFile() {
@@ -59,7 +58,7 @@ public class PayrollTest {
     @Test
     public void testPayrollNull() {
         List<Salary> salaries = payroll.getPayroll(null);
-        assertEquals(salaries.size(), 0);
+        assertEquals(0, salaries.size());
         verify(storage, never()).setEmployees(anyListOf(Employee.class));
     }
 
@@ -105,7 +104,7 @@ public class PayrollTest {
 
         when(storage.getCurrency(c.getCurrencyId())).thenReturn(c);
         Currency result = payroll.getCurrency(c.getCurrencyId());
-        assertEquals(result, c);
+        assertEquals(c, result);
     }
 
     @Test(expected = CurrencyNotFoundException.class)

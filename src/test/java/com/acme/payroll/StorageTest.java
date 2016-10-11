@@ -22,7 +22,7 @@ public class StorageTest {
     @Test
     public void setEmployeesNull() {
         storage.setEmployees(null);
-        Assert.assertEquals(storage.getEmployeesMap().size(), 0);
+        Assert.assertEquals(0, storage.getEmployeesMap().size());
     }
 
     @Test
@@ -36,14 +36,14 @@ public class StorageTest {
 
         storage.setEmployees(employees);
 
-        Assert.assertEquals(storage.getEmployeesMap().size(), 1);
+        Assert.assertEquals(1, storage.getEmployeesMap().size());
         Assert.assertSame(employee, storage.getEmployee(firstName + " " + secondName));
     }
 
     @Test
     public void setCurrenciesNull() {
         storage.setCurrencies(null);
-        Assert.assertEquals(storage.getCurrenciesMap().size(), 0);
+        Assert.assertEquals(0, storage.getCurrenciesMap().size());
     }
 
     @Test
@@ -54,7 +54,7 @@ public class StorageTest {
 
         storage.setCurrencies(currencies);
 
-        Assert.assertEquals(storage.getCurrenciesMap().size(), 1);
+        Assert.assertEquals(1, storage.getCurrenciesMap().size());
         Assert.assertSame(currency, storage.getCurrency("MockId"));
     }
 
@@ -74,11 +74,11 @@ public class StorageTest {
         employees.add(employee1);
         employees.add(employee2);
 
-        Assert.assertEquals(employees.size(), 2);
+        Assert.assertEquals(2, employees.size());
 
         storage.setEmployees(employees);
 
-        Assert.assertEquals(storage.getEmployeesMap().size(), 1);
+        Assert.assertEquals(1, storage.getEmployeesMap().size());
         Assert.assertEquals(employee1, storage.getEmployee(firstName1 + " " + secondName1));
     }
 
@@ -90,11 +90,11 @@ public class StorageTest {
         currencies.add(currency1);
         currencies.add(currency2);
 
-        Assert.assertEquals(currencies.size(), 2);
+        Assert.assertEquals(2, currencies.size());
 
         storage.setCurrencies(currencies);
 
-        Assert.assertEquals(storage.getCurrenciesMap().size(), 1);
+        Assert.assertEquals(1, storage.getCurrenciesMap().size());
         Assert.assertEquals(currency1, storage.getCurrency("MockId"));
     }
 }
