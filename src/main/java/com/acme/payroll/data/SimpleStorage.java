@@ -42,12 +42,4 @@ public class SimpleStorage implements Storage {
     public Currency getCurrency(String currencyId) {
         return currencies.get(currencyId);
     }
-
-    public Map<String, Employee> getEmployeesMap() {
-        return employees;
-    }
-
-    public Map<String, Currency> getCurrenciesMap() {
-        return currencies;
-    }
 }

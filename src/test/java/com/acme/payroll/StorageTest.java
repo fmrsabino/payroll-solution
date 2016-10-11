@@ -22,7 +22,7 @@ public class StorageTest {
     @Test
     public void setEmployeesNull() {
         storage.setEmployees(null);
-        Assert.assertEquals(0, storage.getEmployeesMap().size());
+        Assert.assertEquals(0, storage.getEmployees().size());
     }
 
     @Test
@@ -36,14 +36,14 @@ public class StorageTest {
 
         storage.setEmployees(employees);
 
-        Assert.assertEquals(1, storage.getEmployeesMap().size());
+        Assert.assertEquals(1, storage.getEmployees().size());
         Assert.assertSame(employee, storage.getEmployee(firstName + " " + secondName));
     }
 
     @Test
     public void setCurrenciesNull() {
         storage.setCurrencies(null);
-        Assert.assertEquals(0, storage.getCurrenciesMap().size());
+        Assert.assertEquals(0, storage.getCurrencies().size());
     }
 
     @Test
@@ -54,7 +54,7 @@ public class StorageTest {
 
         storage.setCurrencies(currencies);
 
-        Assert.assertEquals(1, storage.getCurrenciesMap().size());
+        Assert.assertEquals(1, storage.getCurrencies().size());
         Assert.assertSame(currency, storage.getCurrency("MockId"));
     }
 
@@ -78,7 +78,7 @@ public class StorageTest {
 
         storage.setEmployees(employees);
 
-        Assert.assertEquals(1, storage.getEmployeesMap().size());
+        Assert.assertEquals(1, storage.getEmployees().size());
         Assert.assertEquals(employee1, storage.getEmployee(firstName1 + " " + secondName1));
     }
 
@@ -94,7 +94,7 @@ public class StorageTest {
 
         storage.setCurrencies(currencies);
 
-        Assert.assertEquals(1, storage.getCurrenciesMap().size());
+        Assert.assertEquals(1, storage.getCurrencies().size());
         Assert.assertEquals(currency1, storage.getCurrency("MockId"));
     }
 }
